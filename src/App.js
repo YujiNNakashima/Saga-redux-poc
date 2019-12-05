@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { loadRequestUser, testeAction } from './ducks/search/actions';
+import User from './components/User'
 
-function App() {
+function App({addInputToStoreAction}) {
+
+  const [inputState, setInputState] = useState({
+    input: ''
+  })
+
+  useEffect(() => {
+  })
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(inputState.input)
+    // chama a action
+    loadRequestUser(inputState.input)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder="insert" onChange={(e) => setInputState({input: e.target.value})}></input>
+        <button type="submit">clica</button>
+      </form>
+      <User></User>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  store: state
+})
+
+const mapDispatchToProps = dispatch => ({
+  // addInputToStoreAction: (input) => dispatch(addInputToStoreAction(input))
+  loadRequestUser: (id) => dispatch(loadRequestUser(id)),
+  testeAction: () => dispatch(testeAction())
+})
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
